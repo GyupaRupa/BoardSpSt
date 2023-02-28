@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head th:fragment="config">
+    <link rel="stylesheet" type="text/css" href="@{/bootstrap.min.css}">
+    <script src="@{/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="wrap">
+    <header th:replace="fragments/header :: copy"></header>
+
+    <div layout:fragment="content">
+        <p>test</p>
+    </div>
+
+    <footer th:replace="fragments/footer :: copy"></footer>
+</div>
+</body>
+
+</html>
