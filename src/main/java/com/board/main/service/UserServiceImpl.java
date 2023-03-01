@@ -44,8 +44,10 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User findByUserId() {
-        return null;
+    public User findByUserId(String userId) {
+        User user = userRepository.findByUserId(userId);
+        if (user == null) throw new RuntimeException("해당하는 유저가 없습니다");
+        return user;
     }
 
     @Override

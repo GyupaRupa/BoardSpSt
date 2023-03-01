@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface UserService {
     Long signUp(UserDTO userDTO);
 
-    User findByUserId();
+    User findByUserId(String userId);
 
     User findByEmail();
 
