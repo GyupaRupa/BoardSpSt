@@ -9,19 +9,18 @@ import java.time.LocalDateTime;
 
 @Setter
 @Getter
-@Table(name = "posts")
+@Table(name = "comments")
 @Entity
-public class Post {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(columnDefinition = "TEXT")
-    private String writer;
+    private Long postId;
 
     @Column(columnDefinition = "TEXT")
-    private String title;
+    private String writer;
 
     @Column(columnDefinition = "TEXT")
     private String content;
@@ -29,9 +28,6 @@ public class Post {
     private Integer likeCnt;
 
     private Integer hateCnt;
-
-    //
-    private Integer boardType;
 
     private LocalDateTime regidate;
 }

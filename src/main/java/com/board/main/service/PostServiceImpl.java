@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -31,6 +32,19 @@ public class PostServiceImpl implements PostService{
         postRepository.save(post);
 
         return post.getId();
+    }
+
+    @Override
+    public Post findById(Long id) throws Exception {
+        Optional<Post> postOptional = postRepository.findById(id);
+
+        if(postOptional.isPresent()) {
+            Post post = postOptional.get();
+            return post;
+        } else {
+            throw new Exception();
+        }
+
     }
 
     @Override
