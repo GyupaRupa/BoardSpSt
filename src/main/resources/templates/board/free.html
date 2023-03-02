@@ -4,7 +4,7 @@
       layout:decorate="~{layout/defaultLayout}">
 
 <div layout:fragment="content">
-    <table class="table">
+    <table class="table" style="text-align: center;">
         <thead class="thead-dark">
         <tr>
             <th scope="col">제목</th>
@@ -15,7 +15,7 @@
         </thead>
         <tbody>
         <tr th:each="post : ${postList}">
-            <td>
+            <td style="width: 50%">
                 <a th:href="@{|/board/free/${post.id}|}" th:text="${post.title}"></a>
             </td>
             <td th:text="${post.writer}"></td>

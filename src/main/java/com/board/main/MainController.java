@@ -36,9 +36,36 @@ public class MainController {
     }
 
     @GetMapping("/member/signup")
+    public ModelAndView getLoginPage() {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/member/signup.html");
+        return mv;
+    }
+
+    @PostMapping("/member/signup")
+    public ModelAndView login(String userId, String password) {
+
+
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("redirect:/");
+
+        return mv;
+    }
+
+    @GetMapping("/member/signup")
     public ModelAndView signUp() {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/member/signup.html");
+        return mv;
+    }
+
+    @PostMapping("/member/signup")
+    public ModelAndView doSignUp(String userId, String password, String nickName, String eMail, String number) {
+        userService.signUp(userId, password, nickName, eMail, number);
+
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("redirect:/");
+
         return mv;
     }
 
@@ -75,9 +102,7 @@ public class MainController {
     @PostMapping("/board/free/cmtcreate/{id}")
     public ModelAndView cmtToPost(@PathVariable("id") Long id, String content) {
         commentService.comment("_", content, id);
-
         ModelAndView mv = new ModelAndView();
-
         mv.setViewName("redirect:/board/free/{id}");
 
         return mv;
@@ -85,10 +110,7 @@ public class MainController {
 
     @GetMapping("/board/free/create")
     public ModelAndView createFreePost() {
-
-
         ModelAndView mv = new ModelAndView();
-
         mv.setViewName("/board/create.html");
 
         return mv;
@@ -97,17 +119,10 @@ public class MainController {
     @PostMapping("/board/free/create")
     public ModelAndView postFreeBoard(String title, String content) {
         postService.post("_", title, content, 1);
-
         ModelAndView mv = new ModelAndView();
-
         mv.setViewName("redirect:/board/free");
 
         return mv;
     }
-
-//    @PostMapping("/member/signup")
-//    public ModelAndView signUp() {
-//
-//    }
 
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface UserService {
-    Long signUp(UserDTO userDTO);
+    Long signUp(String userId, String password, String nickName, String eMail, String number);
 
     User findByUserId(String userId);
 

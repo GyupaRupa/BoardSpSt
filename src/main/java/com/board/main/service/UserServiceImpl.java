@@ -5,6 +5,7 @@ import com.board.main.domain.UserDTO;
 import com.board.main.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,32 +15,35 @@ import java.time.LocalDateTime;
 public class UserServiceImpl implements UserService{
     @Autowired
     private final UserRepository userRepository;
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
     @Override
-    public Long signUp(UserDTO userDTO) {
+    public Long signUp(String userId, String password, String nickName, String eMail, String number) {
 
-        if (!validateDuplicate(userDTO)) {
+        if (!validateDuplicate(userId)) {
             System.out.println("이미 존재하는 회원입니다.");
             return -1L;
         }
 
+        System.out.println(userId + password + nickName + eMail + number);
+
         User user = new User();
-        user.setUserId(userDTO.getUserId());
-        user.setNumber(userDTO.getEMail());
-        user.setPassword(userDTO.getPassword());
-        user.setNickName(userDTO.getNickName());
+        user.setUserId(userId);
+        user.setNumber(eMail);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setNickName(nickName);
+        user.setNumber(number);
         user.setRegidate(LocalDateTime.now());
         user.setLevel(0);
         user.setExp(0);
-
-        System.out.println(user.getLevel());
 
         userRepository.save(user);
 
         return user.getId();
     }
 
-    private boolean validateDuplicate(UserDTO userDTO) {
-        User user = userRepository.findByUserId(userDTO.getUserId());
+    private boolean validateDuplicate(String userId) {
+        User user = userRepository.findByUserId(userId);
         return user == null;
     }
 
