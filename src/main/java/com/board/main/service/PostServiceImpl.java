@@ -1,5 +1,6 @@
 package com.board.main.service;
 
+import com.board.main.domain.Member;
 import com.board.main.domain.Post;
 import com.board.main.domain.PostDTO;
 import com.board.main.repository.PostRepository;
@@ -18,10 +19,10 @@ public class PostServiceImpl implements PostService{
     private final PostRepository postRepository;
 
     @Override
-    public Long post(String writer, String title, String content, Integer boardType) {
+    public Long post(Member author, String title, String content, Integer boardType) {
         Post post = new Post();
 
-        post.setWriter(writer);
+        post.setAuthor(author);
         post.setTitle(title);
         post.setContent(content);
         post.setHateCnt(0);

@@ -17,8 +17,8 @@ public class Post {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(columnDefinition = "TEXT")
-    private String writer;
+    @ManyToOne
+    private Member author;
 
     @Column(columnDefinition = "TEXT")
     private String title;

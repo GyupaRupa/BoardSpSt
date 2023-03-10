@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -34,7 +35,17 @@ public class MemberServiceImpl implements MemberService {
         return member.getId();
     }
 
-//    @Override
+    @Override
+    public Member getUser(String memberId) {
+        Optional<Member> member = memberRepository.findByMemberId(memberId);
+        if (member.isPresent()) {
+            return member.get();
+        } else {
+            throw new RuntimeException("siteuser not found");
+        }
+    }
+
+    //    @Override
 //    public User findByUserId(String userId) {
 //        Optional<User> _user = this.userRepository.findByUserId(userId);
 //        if (_user.isEmpty()) {

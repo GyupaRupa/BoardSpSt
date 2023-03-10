@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout/defaultLayout}">
 
 <div layout:fragment="content">
@@ -18,13 +19,13 @@
             <td style="width: 50%">
                 <a th:href="@{|/board/free/${post.id}|}" th:text="${post.title}"></a>
             </td>
-            <td th:text="${post.writer}"></td>
+            <td th:text="${post.author.nickname}"></td>
             <td th:text="${post.likeCnt - post.hateCnt}"></td>
-            <td th:text="${post.regidate}"></td>
+            <td th:text="${#temporals.format(post.regidate, 'yyyy-MM-dd HH:mm')}"></td>
         </tr>
         </tbody>
     </table>
-    <button type="button" class="btn btn-primary" onclick="location.href='/board/free/create'">글쓰기</button>
+    <button type="button" class="btn btn-primary" onclick="location.href='/board/free/create'" sec:authorize="isAuthenticated()">글쓰기</button>
 
 </div>
 

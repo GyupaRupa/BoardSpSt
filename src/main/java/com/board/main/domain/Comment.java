@@ -17,10 +17,11 @@ public class Comment {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private Long postId;
+    @ManyToOne
+    private Post post;
 
-    @Column(columnDefinition = "TEXT")
-    private String writer;
+    @ManyToOne
+    private Member author;
 
     @Column(columnDefinition = "TEXT")
     private String content;

@@ -1,6 +1,8 @@
 package com.board.main.service;
 
 import com.board.main.domain.Comment;
+import com.board.main.domain.Member;
+import com.board.main.domain.Post;
 import com.board.main.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,11 +16,11 @@ public class CommentServiceImpl implements CommentService{
     private final CommentRepository commentRepository;
 
     @Override
-    public Long comment(String writer, String content, Long postId) {
+    public Long comment(Member author, String content, Post post) {
         Comment comment = new Comment();
 
-        comment.setPostId(postId);
-        comment.setWriter(writer);
+        comment.setPost(post);
+        comment.setAuthor(author);
         comment.setContent(content);
         comment.setRegidate(LocalDateTime.now());
         comment.setLikeCnt(0);

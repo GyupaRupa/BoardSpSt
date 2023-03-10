@@ -5,6 +5,7 @@ import com.board.main.service.CommentService;
 import com.board.main.service.PostService;
 import com.board.main.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -42,16 +44,6 @@ public class MainController {
         return mv;
     }
 
-//    @PostMapping("/member/signin")
-//    public ModelAndView signIn(String memberId, String password) {
-//        System.out.println("\n여기야!!\n");
-//        System.out.println(memberId);
-//        ModelAndView mv = new ModelAndView();
-//        mv.setViewName("redirect:/");
-//
-//        return mv;
-//    }
-
     @GetMapping("/member/signup")
     public ModelAndView signUp() {
         ModelAndView mv = new ModelAndView();
@@ -61,6 +53,7 @@ public class MainController {
 
     @PostMapping("/member/signup")
     public ModelAndView doSignUp(String memberId, String password, String nickname, String email, String number) {
+        System.out.println(memberId);
         memberService.signUp(memberId, password, nickname, email, number);
 
         ModelAndView mv = new ModelAndView();
@@ -99,15 +92,24 @@ public class MainController {
         }
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/board/free/cmtcreate/{id}")
-    public ModelAndView cmtToPost(@PathVariable("id") Long id, String content) {
-        commentService.comment("_", content, id);
+    public ModelAndView cmtToPost(@PathVariable("id") Long id, String content, Principal principal) {
+        Member author = memberService.getUser(principal.getName());
+        Post post = null;
+        try {
+            post = postService.findById(id);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        commentService.comment(author, content, post);
         ModelAndView mv = new ModelAndView();
         mv.setViewName("redirect:/board/free/{id}");
 
         return mv;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/board/free/create")
     public ModelAndView createFreePost() {
         ModelAndView mv = new ModelAndView();
@@ -116,9 +118,11 @@ public class MainController {
         return mv;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/board/free/create")
-    public ModelAndView postFreeBoard(String title, String content) {
-        postService.post("_", title, content, 1);
+    public ModelAndView postFreeBoard(String title, String content, Principal principal) {
+        Member author = memberService.getUser(principal.getName());
+        postService.post(author, title, content, 1);
         ModelAndView mv = new ModelAndView();
         mv.setViewName("redirect:/board/free");
 
