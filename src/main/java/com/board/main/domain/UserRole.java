@@ -1,2 +1,15 @@
-package com.board.main.domain;public enum UserRole {
+package com.board.main.domain;
+
+import lombok.Getter;
+
+@Getter
+public enum UserRole {
+    ADMIN("ROLE_ADMIN"),
+    USER("ROLE_USER");
+
+    UserRole(String value) {
+        this.value = value;
+    }
+
+    private String value;
 }

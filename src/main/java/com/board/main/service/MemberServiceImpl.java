@@ -1,44 +1,37 @@
 package com.board.main.service;
 
-import com.board.main.domain.User;
-import com.board.main.domain.UserDTO;
-import com.board.main.domain.UserRole;
-import com.board.main.repository.UserRepository;
+import com.board.main.domain.Member;
+import com.board.main.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class UserServiceImpl implements UserService{
+public class MemberServiceImpl implements MemberService {
     @Autowired
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
     @Autowired
     private final PasswordEncoder passwordEncoder;
     @Override
-    public Long signUp(String userId, String password, String nickName, String eMail, String number) {
+    public Long signUp(String memberId, String password, String nickname, String email, String number) {
 
-        User user = new User();
-        user.setUserId(userId);
-        user.setNumber(eMail);
-        user.setPassword(passwordEncoder.encode(password));
-        user.setNickName(nickName);
-        user.setNumber(number);
-        user.setRegidate(LocalDateTime.now());
-        user.setLevel(0);
-        user.setExp(0);
+        Member member = new Member();
+        member.setMemberId(memberId);
+        member.setEmail(email);
+        member.setPassword(passwordEncoder.encode(password));
+        member.setNickname(nickname);
+        member.setNumber(number);
+        member.setRegidate(LocalDateTime.now());
+        member.setLevel(0);
+        member.setExp(0);
 
-        userRepository.save(user);
+        memberRepository.save(member);
 
-        return user.getId();
+        return member.getId();
     }
 
 //    @Override
@@ -58,12 +51,12 @@ public class UserServiceImpl implements UserService{
 //
 //    }
     @Override
-    public User findByEmail() {
+    public Member findByEmail() {
         return null;
     }
 
     @Override
-    public User findById() {
+    public Member findById() {
         return null;
     }
 }

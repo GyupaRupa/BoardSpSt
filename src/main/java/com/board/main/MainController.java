@@ -3,7 +3,7 @@ package com.board.main;
 import com.board.main.domain.*;
 import com.board.main.service.CommentService;
 import com.board.main.service.PostService;
-import com.board.main.service.UserService;
+import com.board.main.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("/")
 public class MainController {
     @Autowired
-    private UserService userService;
+    private MemberService memberService;
     @Autowired
     private PostService postService;
     @Autowired
@@ -35,22 +35,22 @@ public class MainController {
         return mv;
     }
 
-    @GetMapping("/member/signup")
-    public ModelAndView getLoginPage() {
+    @GetMapping("/member/signin")
+    public ModelAndView getSignInPage() {
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/member/signup.html");
+        mv.setViewName("/member/signin.html");
         return mv;
     }
 
-    @PostMapping("/member/signup")
-    public ModelAndView login(String userId, String password) {
-
-
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("redirect:/");
-
-        return mv;
-    }
+//    @PostMapping("/member/signin")
+//    public ModelAndView signIn(String memberId, String password) {
+//        System.out.println("\n여기야!!\n");
+//        System.out.println(memberId);
+//        ModelAndView mv = new ModelAndView();
+//        mv.setViewName("redirect:/");
+//
+//        return mv;
+//    }
 
     @GetMapping("/member/signup")
     public ModelAndView signUp() {
@@ -60,8 +60,8 @@ public class MainController {
     }
 
     @PostMapping("/member/signup")
-    public ModelAndView doSignUp(String userId, String password, String nickName, String eMail, String number) {
-        userService.signUp(userId, password, nickName, eMail, number);
+    public ModelAndView doSignUp(String memberId, String password, String nickname, String email, String number) {
+        memberService.signUp(memberId, password, nickname, email, number);
 
         ModelAndView mv = new ModelAndView();
         mv.setViewName("redirect:/");

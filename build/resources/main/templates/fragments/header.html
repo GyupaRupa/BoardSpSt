@@ -1,9 +1,11 @@
-<html lagn="ko" xmlns:th="http://www.thymeleaf.org">
+<html lagn="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <!--headerFragment 선언-->
 <div th:fragment="copy">
 <!--    <nav class="navbar navbar-dark bg-dark">-->
 <!--        &lt;!&ndash; Navbar content &ndash;&gt;-->
 <!--    </nav>-->
-    <a href="/"><h1>Home</h1></a>
+    <a href="/"><h1>홈</h1></a>
+    <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/member/signin}">로그인</a>
+    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/member/signout}">로그아웃</a>
 </div>
 </html>

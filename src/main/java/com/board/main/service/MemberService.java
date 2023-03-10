@@ -1,19 +1,11 @@
 package com.board.main.service;
 
-import com.board.main.domain.User;
-import com.board.main.domain.UserDTO;
-import com.board.main.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.board.main.domain.Member;
 
-public interface UserService {
-    Long signUp(String userId, String password, String nickName, String eMail, String number);
+public interface MemberService {
+    Long signUp(String memberId, String password, String nickname, String email, String number);
 
-//    User findByUserId(String userId);
+    Member findByEmail();
 
-    User findByEmail();
-
-    User findById();
+    Member findById();
 }

@@ -1,32 +1,32 @@
 package com.board.main.domain;
 
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Setter
 @Getter
+@Data
 @Table(name = "users")
 @Entity
-public class User {
+public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
     @Column(columnDefinition = "TEXT")
-    private String userId;
+    private String memberId;
 
     @Column(columnDefinition = "TEXT")
     private String password;
 
     @Column(columnDefinition = "TEXT")
-    private String nickName;
+    private String nickname;
 
     @Column(columnDefinition = "TEXT")
-    private String eMail;
+    private String email;
 
     @Column(columnDefinition = "TEXT")
     private String number;
