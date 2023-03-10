@@ -2,13 +2,19 @@ package com.board.main.service;
 
 import com.board.main.domain.User;
 import com.board.main.domain.UserDTO;
+import com.board.main.domain.UserRole;
 import com.board.main.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -19,13 +25,6 @@ public class UserServiceImpl implements UserService{
     private final PasswordEncoder passwordEncoder;
     @Override
     public Long signUp(String userId, String password, String nickName, String eMail, String number) {
-
-        if (!validateDuplicate(userId)) {
-            System.out.println("이미 존재하는 회원입니다.");
-            return -1L;
-        }
-
-        System.out.println(userId + password + nickName + eMail + number);
 
         User user = new User();
         user.setUserId(userId);
@@ -42,18 +41,22 @@ public class UserServiceImpl implements UserService{
         return user.getId();
     }
 
-    private boolean validateDuplicate(String userId) {
-        User user = userRepository.findByUserId(userId);
-        return user == null;
-    }
-
-    @Override
-    public User findByUserId(String userId) {
-        User user = userRepository.findByUserId(userId);
-        if (user == null) throw new RuntimeException("해당하는 유저가 없습니다");
-        return user;
-    }
-
+//    @Override
+//    public User findByUserId(String userId) {
+//        Optional<User> _user = this.userRepository.findByUserId(userId);
+//        if (_user.isEmpty()) {
+//            throw new RuntimeException();
+//        }
+//        User user = _user.get();
+//        List<GrantedAuthority> authorities = new ArrayList<>();
+//        if ("admin".equals(userId)) {
+//            authorities.add(new SimpleGrantedAuthority(UserRole.ADMIN.getValue()));
+//        } else {
+//            authorities.add(new SimpleGrantedAuthority(UserRole.USER.getValue()));
+//        }
+//        return new User(user.getUserId(), user.getPassword(), authorities);
+//
+//    }
     @Override
     public User findByEmail() {
         return null;
