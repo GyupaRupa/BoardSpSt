@@ -6,11 +6,13 @@
 </head>
 <body>
 <div class="wrap">
+
     <header th:replace="fragments/header :: copy"></header>
-
-    <div layout:fragment="content"></div>
-
+    <section class="vh-100" style="background-color: #eee;">
+        <div layout:fragment="content"></div>
+    </section>
     <footer th:replace="fragments/footer :: copy"></footer>
+
 </div>
 </body>
 

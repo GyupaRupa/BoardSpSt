@@ -1,14 +1,11 @@
 package com.board.main.domain;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Setter
-@Getter
+@Data
 public class PostDTO {
     private Long id;
 

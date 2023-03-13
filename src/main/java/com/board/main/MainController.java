@@ -53,7 +53,6 @@ public class MainController {
 
     @PostMapping("/member/signup")
     public ModelAndView doSignUp(String memberId, String password, String nickname, String email, String number) {
-        System.out.println(memberId);
         memberService.signUp(memberId, password, nickname, email, number);
 
         ModelAndView mv = new ModelAndView();
