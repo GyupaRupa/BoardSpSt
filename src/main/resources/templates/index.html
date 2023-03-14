@@ -2,22 +2,33 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/defaultLayout}">
-
-<div layout:fragment="content" class="container-fluid h-100">
+<div layout:fragment="content" class="container-xl h-100">
     <div class="row mb-3">
         <div class="col-md-6 themed-grid-col">
             <div class="container-fluid h-50">
-                <h4 class="mt-4">핫게시판</h4>
-                <div class="card text-black" style="border-radius: 25px;">
+                <a class="board-title" th:href="@{/board/hot}">
+                    <h4 class="mt-4">핫게시판</h4>
+                </a>
+                <div class="card text-black" style="border-radius: 10px;">
                     잉
                 </div>
             </div>
         </div>
         <div class="col-md-6 themed-grid-col">
             <div class="container-fluid h-50">
-                자유게시판
-                <div class="card text-black" style="border-radius: 25px;">
-                    잉
+                <a class="board-title" th:href="@{/board/free}">
+                    <h4 class="mt-4">자유게시판</h4>
+                </a>
+                <div class="card text-black" style="border-radius: 10px;">
+                    <table class="table">
+                        <tbody>
+                        <tr th:each="post : ${postList}">
+                            <td style="width: 50%">
+                                <a class="board-content" th:href="@{|/board/${post.id}|}" th:text="${post.title}"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -26,16 +37,20 @@
     <div class="row mb-3">
         <div class="col-md-6 themed-grid-col">
             <div class="container-fluid h-50">
-                1게시판
-                <div class="card text-black" style="border-radius: 25px;">
+                <a class="board-title" th:href="@{/board/free}">
+                    <h4 class="mt-4">1게시판</h4>
+                </a>
+                <div class="card text-black" style="border-radius: 10px;">
                     잉
                 </div>
             </div>
         </div>
         <div class="col-md-6 themed-grid-col">
             <div class="container-fluid h-50">
-                2게시판
-                <div class="card text-black" style="border-radius: 25px;">
+                <a class="board-title" th:href="@{/board/free}">
+                    <h4 class="mt-4">2게시판</h4>
+                </a>
+                <div class="card text-black" style="border-radius: 10px;">
                     잉
                 </div>
             </div>

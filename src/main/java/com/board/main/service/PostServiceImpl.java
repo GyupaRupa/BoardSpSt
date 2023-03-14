@@ -1,11 +1,15 @@
 package com.board.main.service;
 
+import com.board.main.domain.BoardType;
 import com.board.main.domain.Member;
 import com.board.main.domain.Post;
 import com.board.main.domain.PostDTO;
 import com.board.main.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,7 +23,7 @@ public class PostServiceImpl implements PostService{
     private final PostRepository postRepository;
 
     @Override
-    public Long post(Member author, String title, String content, Integer boardType) {
+    public Long post(Member author, String title, String content, BoardType boardType) {
         Post post = new Post();
 
         post.setAuthor(author);
@@ -49,8 +53,26 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public List<Post> findAll() {
-        List<Post> postList = postRepository.findAll();
+    public List<Post> getBoardPosts(int crtPage, int size, BoardType boardType) throws Exception {
+//        Page<Post> postPage = postRepository.findAll(PageRequest.of(crtPage, size, Sort.by(Sort.Direction.DESC, "regidate")));
+        Page<Post> postPage = postRepository.findAllByBoardType(PageRequest.of(crtPage, size, Sort.by(Sort.Direction.DESC, "regidate")), boardType);
+        if (postPage.isEmpty()) {
+            throw new Exception();
+        } else {
+            return postPage.getContent();
+        }
+    }
+
+//    @Override
+//    public List<Post> findAll() {
+//        List<Post> postList = postRepository.findAll();
+//
+//        return postList;
+//    }
+
+    @Override
+    public List<Post> findTop10() {
+        List<Post> postList = postRepository.findTop10ByOrderByRegidateDesc();
 
         return postList;
     }

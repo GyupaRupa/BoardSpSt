@@ -4,28 +4,35 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout/defaultLayout}">
 
-<div layout:fragment="content">
-    <table class="table" style="text-align: center;">
-        <thead class="thead-dark">
-        <tr>
-            <th scope="col">제목</th>
-            <th scope="col">글쓴이</th>
-            <th scope="col">추천 수</th>
-            <th scope="col">날짜</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="post : ${postList}">
-            <td style="width: 50%">
-                <a th:href="@{|/board/free/${post.id}|}" th:text="${post.title}"></a>
-            </td>
-            <td th:text="${post.author.nickname}"></td>
-            <td th:text="${post.likeCnt - post.hateCnt}"></td>
-            <td th:text="${#temporals.format(post.regidate, 'yyyy-MM-dd HH:mm')}"></td>
-        </tr>
-        </tbody>
-    </table>
-    <button type="button" class="btn btn-primary" onclick="location.href='/board/free/create'" sec:authorize="isAuthenticated()">글쓰기</button>
+<div layout:fragment="content" class="container-xl h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-12 col-xl-12">
+            <div class="card text-black" style="border-radius: 25px;">
+                <table class="table" style="text-align: center;">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">제목</th>
+                        <th scope="col">글쓴이</th>
+                        <th scope="col">추천 수</th>
+                        <th scope="col">날짜</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="post : ${postList}">
+                        <td style="width: 50%">
+                            <a th:href="@{|/board/${post.id}|}" th:text="${post.title}"></a>
+                        </td>
+                        <td th:text="${post.author.nickname}"></td>
+                        <td th:text="${post.likeCnt - post.hateCnt}"></td>
+                        <td th:text="${#temporals.format(post.regidate, 'yyyy-MM-dd HH:mm')}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <button type="button" class="btn btn-primary" onclick="location.href='/board/free/create'" sec:authorize="isAuthenticated()">글쓰기</button>
+            </div>
+        </div>
+    </div>
+
 
 </div>
 

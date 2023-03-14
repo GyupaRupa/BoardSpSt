@@ -31,7 +31,7 @@ public class Post {
     private Integer hateCnt;
 
     //
-    private Integer boardType;
+    private BoardType boardType;
 
     private LocalDateTime regidate;
 }

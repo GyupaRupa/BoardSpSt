@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -28,31 +30,30 @@ public class MainController {
 
     @GetMapping
     public ModelAndView main() {
+        List<Post> postList = postService.findTop10();
         ModelAndView mv = new ModelAndView();
         mv.setViewName("index.html");
+        mv.addObject(postList);
 
-//        User user = userService.findByUserId();
-
-        mv.addObject("temp", "hello!!!");
         return mv;
     }
 
     @GetMapping("/member/signin")
-    public ModelAndView getSignInPage() {
+    public ModelAndView getSignIn() {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/member/signin.html");
         return mv;
     }
 
     @GetMapping("/member/signup")
-    public ModelAndView signUp() {
+    public ModelAndView getSignUp() {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/member/signup.html");
         return mv;
     }
 
     @PostMapping("/member/signup")
-    public ModelAndView doSignUp(String memberId, String password, String nickname, String email, String number) {
+    public ModelAndView PostSignUp(String memberId, String password, String nickname, String email, String number) {
         memberService.signUp(memberId, password, nickname, email, number);
 
         ModelAndView mv = new ModelAndView();
@@ -61,20 +62,8 @@ public class MainController {
         return mv;
     }
 
-    @GetMapping("/board/free")
-    public ModelAndView freeBoard() {
-        List<Post> postList = postService.findAll();
-
-        ModelAndView mv = new ModelAndView();
-
-        mv.setViewName("/board/free.html");
-        mv.addObject(postList);
-
-        return mv;
-    }
-
-    @GetMapping("/board/free/{id}")
-    public ModelAndView getFreePost(@PathVariable("id") Long id) {
+    @GetMapping("/board/{id}")
+    public ModelAndView getFreeBoardPost(@PathVariable("id") Long id) {
         try {
             Post post = postService.findById(id);
             ModelAndView mv = new ModelAndView();
@@ -91,8 +80,47 @@ public class MainController {
         }
     }
 
+    @GetMapping("/board/free")
+    public ModelAndView getFreeBoard(String page) throws Exception{
+        if (page == null || page.equals("0")) page = "1";
+        List<Post> postList = postService.getBoardPosts(Integer.valueOf(page) - 1, 20, BoardType.FREE);
+
+        ModelAndView mv = new ModelAndView();
+
+        mv.setViewName("/board/free.html");
+        mv.addObject(postList);
+
+        return mv;
+    }
+
+    @GetMapping("/board/game")
+    public ModelAndView getGameBoard(String page) throws Exception{
+        if (page == null || page.equals("0")) page = "1";
+        List<Post> postList = postService.getBoardPosts(Integer.valueOf(page) - 1, 10, BoardType.GAME);
+
+        ModelAndView mv = new ModelAndView();
+
+        mv.setViewName("/board/game.html");
+        mv.addObject(postList);
+
+        return mv;
+    }
+
+    @GetMapping("/board/sports")
+    public ModelAndView getSportsBoard(String page) throws Exception{
+        if (page == null || page.equals("0")) page = "1";
+        List<Post> postList = postService.getBoardPosts(Integer.valueOf(page) - 1, 10, BoardType.SPORTS);
+
+        ModelAndView mv = new ModelAndView();
+
+        mv.setViewName("/board/sports.html");
+        mv.addObject(postList);
+
+        return mv;
+    }
+
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/board/free/cmtcreate/{id}")
+    @PostMapping("/board/cmtcreate/{id}")
     public ModelAndView cmtToPost(@PathVariable("id") Long id, String content, Principal principal) {
         Member author = memberService.getUser(principal.getName());
         Post post = null;
@@ -109,22 +137,76 @@ public class MainController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/board/free/create")
-    public ModelAndView createFreePost() {
+    @PostMapping("/board/free/create")
+    public ModelAndView postFreeBoard(String title, String content, Principal principal) {
+        Member author = memberService.getUser(principal.getName());
+        postService.post(author, title, content, BoardType.FREE);
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/board/create.html");
+        mv.setViewName("redirect:/board/free");
 
         return mv;
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/board/free/create")
-    public ModelAndView postFreeBoard(String title, String content, Principal principal) {
+    @PostMapping("/board/game/create")
+    public ModelAndView postGameBoard(String title, String content, Principal principal) {
         Member author = memberService.getUser(principal.getName());
-        postService.post(author, title, content, 1);
+        postService.post(author, title, content, BoardType.GAME);
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("redirect:/board/game");
+
+        return mv;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/board/sports/create")
+    public ModelAndView postSportsBoard(String title, String content, Principal principal) {
+        Member author = memberService.getUser(principal.getName());
+        postService.post(author, title, content, BoardType.SPORTS);
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("redirect:/board/sports");
+
+        return mv;
+    }
+
+
+
+    @GetMapping("/board/free/add")
+    public ModelAndView addFreeBoardContent() throws Exception {
+        Member author = memberService.getUser("tester");
+        for(int i=0; i<10; i++) {
+            String n = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss:SSS"));
+            postService.post(author, "자유 게시판 글 " + n, String.valueOf(i), BoardType.FREE);
+        }
+
         ModelAndView mv = new ModelAndView();
         mv.setViewName("redirect:/board/free");
+        return mv;
+    }
 
+    @GetMapping("/board/game/add")
+    public ModelAndView addGameBoardContent() throws Exception {
+        Member author = memberService.getUser("tester");
+        for(int i=0; i<10; i++) {
+            String n = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss:SSS"));
+            postService.post(author, "게임 게시판 글 " + n, String.valueOf(i), BoardType.GAME);
+        }
+
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("redirect:/board/free");
+        return mv;
+    }
+
+    @GetMapping("/board/sports/add")
+    public ModelAndView addSportsBoardContent() throws Exception {
+        Member author = memberService.getUser("tester");
+        for(int i=0; i<10; i++) {
+            String n = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss:SSS"));
+            postService.post(author, "스포츠 게시판 글 " + n, String.valueOf(i), BoardType.SPORTS);
+        }
+
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("redirect:/board/free");
         return mv;
     }
 

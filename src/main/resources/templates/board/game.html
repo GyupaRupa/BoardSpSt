@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout/defaultLayout}">
+
+<div layout:fragment="content" class="container-xl h-100">
+  <table class="table" style="text-align: center;">
+    <thead class="thead-dark">
+    <tr>
+      <th scope="col">제목</th>
+      <th scope="col">글쓴이</th>
+      <th scope="col">추천 수</th>
+      <th scope="col">날짜</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="post : ${postList}">
+      <td style="width: 50%">
+        <a th:href="@{|/board/game/${post.id}|}" th:text="${post.title}"></a>
+      </td>
+      <td th:text="${post.author.nickname}"></td>
+      <td th:text="${post.likeCnt - post.hateCnt}"></td>
+      <td th:text="${#temporals.format(post.regidate, 'yyyy-MM-dd HH:mm')}"></td>
+    </tr>
+    </tbody>
+  </table>
+  <button type="button" class="btn btn-primary" onclick="location.href='/board/game/create'" sec:authorize="isAuthenticated()">글쓰기</button>
+
+</div>
+
+</html>
